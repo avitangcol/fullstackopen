@@ -1,3 +1,3 @@
-# Part 1
+# Exercise 1.1-1.2
 
-These are my solutions to [Full Stack open's](https://fullstackopen.com/en/) exercises from [Part 1](https://fullstackopen.com/en/part1)
+The exercises can be found from [Full Stack open](https://fullstackopen.com/en/part1/introduction_to_react#exercises-1-1-1-2).
