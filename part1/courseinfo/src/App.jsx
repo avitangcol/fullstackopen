@@ -25,37 +25,12 @@ const App = () => {
     )
   }
 
-  /*
-  const Content = ({parts, exercises}) => {
-    let zipped = parts.map((a,b) => [a, exercises[b]])
-
-    return (
-      <div>
-        {zipped.map(array => <Part key={array[0]} part={array[0]} exercise={array[1]} />)}
-      </div>
-    )
-  }
-  */
-
   const Total = ({exercises}) => {
     let total = exercises.reduce((a,b) => a+b, 0)
     return (
       <p>Number of exercises {total}</p>
     )
   }
-
-  /*
-  const Total = ({exercises}) => {
-    let total = 0
-    for (let i=0; i < exercises.length; i++) {
-      total += exercises[i]
-    }
-
-    return (
-      <p>Number of exercises {total}</p>
-    )
-  }
-  */
 
   return (
     <div>
