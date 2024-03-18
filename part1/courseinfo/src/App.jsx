@@ -15,13 +15,13 @@ const App = () => {
 
   const Content = ({parts, exercises}) => {
     return (
-      <div>{parts.map((a,b) => <Part part={a} exercise={exercises[b]} />)}</div>
+      <div>{parts.map((a,b) => <Part key={a} part={a} exercise={exercises[b]} />)}</div>
     )
   }
 
   const Part = ({part, exercise}) => {
     return (
-      <p>{part} {exercise}</p>
+      <p key={part}>{part} {exercise}</p>
     )
   }
 
