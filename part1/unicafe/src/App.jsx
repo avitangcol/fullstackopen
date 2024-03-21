@@ -34,9 +34,20 @@ const App = () => {
       <Button key="Bad" handleClick={handleBadClick} text="Bad" />
 
       <h1>Statistics</h1>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
+      <p>
+        Good: {good}
+        <br/>Neutral: {neutral}
+        <br/>Bad: {bad}
+      </p>
+      <p>
+        All: {good+neutral+bad}
+        <br/> Average: {
+          ((1*good) + ((-1)*bad)) / (good+neutral+bad)
+        }
+        <br/> Positive: {
+          100 * (good / (good+neutral+bad))
+        }%
+      </p>
     </div>
   )
 }
