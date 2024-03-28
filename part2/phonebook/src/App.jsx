@@ -33,16 +33,19 @@ const App = () => {
   }
 
   const deletePerson = (id) => {
-    backendService
-      .remove(id)
-      .then(response => {
-        setPersons(persons.filter(person => person.id !== id))
-      })
-      .catch(error => {
-        alert(`${persons[id].name} has already been deleted.`)
-      })
+    let personToDelete = persons.find(person => person.id === id)
+    if (window.confirm(`Are you sure you want to delete '${personToDelete.name}'?`)) {
+      backendService
+        .remove(id)
+        .then(response => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+        .catch(error => {
+          alert(`${personToDelete.name} has already been deleted.`)
+        })
+    }
   }
-
+  
   const handlePersonChange = (event) => {
     setNewName(event.target.value)
   }
