@@ -1,7 +1,7 @@
 const Filter = ({value, onChange}) => {
     return (
         <div>
-            Filter: 
+            Filter by Name: 
             <input
                 value={value}
                 onChange={onChange}

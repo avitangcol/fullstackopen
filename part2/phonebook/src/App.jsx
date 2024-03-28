@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import backendService from './services/persons'
 
 import Form from './components/Form'
 import Filter from './components/Filter'
@@ -23,8 +23,24 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    setPersons(persons.concat(person))
-    setNewName('')
+
+    backendService
+      .create(person)
+      .then(response => {
+        setPersons(persons.concat(response))
+        setNewName('')
+      })
+  }
+
+  const deletePerson = (id) => {
+    backendService
+      .remove(id)
+      .then(response => {
+        setPersons(persons.filter(person => person.id !== id))
+      })
+      .catch(error => {
+        alert(`${persons[id].name} has already been deleted.`)
+      })
   }
 
   const handlePersonChange = (event) => {
@@ -40,13 +56,12 @@ const App = () => {
   }
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
+    backendService
+      .getAll()
       .then(response => {
-        setPersons(persons.concat(response.data))
+        setPersons(persons.concat(response))
       })
   }, [])
-
 
   const personsFiltered = persons.filter(person => person.name.toLowerCase().includes(nameFilter.toLowerCase()))
 
@@ -68,6 +83,7 @@ const App = () => {
       <br />
       <PersonsMap
         persons={personsFiltered}
+        onClick={deletePerson}
       />
     </div>
   )
