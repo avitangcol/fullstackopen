@@ -29,6 +29,7 @@ const App = () => {
       .then(response => {
         setPersons(persons.concat(response))
         setNewName('')
+        setNewNumber('')
       })
   }
 
@@ -62,7 +63,7 @@ const App = () => {
     backendService
       .getAll()
       .then(response => {
-        setPersons(persons.concat(response))
+        setPersons(response)
       })
   }, [])
 
