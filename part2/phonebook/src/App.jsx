@@ -14,14 +14,28 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
     
-    if (persons.some(person => person.name === newName)) {
-      alert(`${newName} is already in the phonebook.`)
-      return
-    }
-
-    let person = {
+    const person = {
       name: newName,
       number: newNumber
+    }
+    const existingPerson = persons.find(person => person.name === newName)
+
+    if (existingPerson) {
+      if (window.confirm(`${newName} is already in the phonebook. Replace their old number with this new one?`)) {
+        const copyOfPerson = { ...existingPerson, number:newNumber }
+        
+        backendService
+          .update(copyOfPerson)
+          .then(response => {
+            setPersons(persons.map(person => person.name === newName ? response : person))
+            setNewName('')
+            setNewNumber('')
+          })
+          .catch(error => {
+            alert(`${existingPerson.name} has already been deleted.`)
+          })
+      }
+      return
     }
 
     backendService
@@ -31,10 +45,13 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
+      .catch(error => {
+        alert(`${existingPerson.name} has already been created.`)
+      })
   }
 
   const deletePerson = (id) => {
-    let personToDelete = persons.find(person => person.id === id)
+    const personToDelete = persons.find(person => person.id === id)
     if (window.confirm(`Are you sure you want to delete '${personToDelete.name}'?`)) {
       backendService
         .remove(id)
