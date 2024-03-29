@@ -4,12 +4,31 @@ import backendService from './services/persons'
 import Form from './components/Form'
 import Filter from './components/Filter'
 import PersonsMap from './components/PersonsMap'
+import Message from './components/Message'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [nameFilter, setNewFilter] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [notification, setNotification] = useState(null)
+
+  const timeoutDelay = 3000
+
+  const makeNotification = message => {
+    setNotification(message)
+    setTimeout(() => {
+      setNotification(null)
+    }, timeoutDelay)
+  }
+
+  const makeError = message => {
+    setErrorMessage(message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, timeoutDelay)
+  }
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -30,10 +49,9 @@ const App = () => {
             setPersons(persons.map(person => person.name === newName ? response : person))
             setNewName('')
             setNewNumber('')
+            makeNotification(`Updated ${person.name}.`)
           })
-          .catch(error => {
-            alert(`${existingPerson.name} has already been deleted.`)
-          })
+          .catch(() => makeError(`${existingPerson.name} has already been deleted.`))
       }
       return
     }
@@ -44,10 +62,9 @@ const App = () => {
         setPersons(persons.concat(response))
         setNewName('')
         setNewNumber('')
+        makeNotification(`Added ${person.name}.`)
       })
-      .catch(error => {
-        alert(`${existingPerson.name} has already been created.`)
-      })
+      .catch(() => makeError(`${existingPerson.name} has already been created.`))
   }
 
   const deletePerson = (id) => {
@@ -57,10 +74,9 @@ const App = () => {
         .remove(id)
         .then(response => {
           setPersons(persons.filter(person => person.id !== id))
+          makeNotification(`Deleted ${personToDelete.name}`)
         })
-        .catch(error => {
-          alert(`${personToDelete.name} has already been deleted.`)
-        })
+        .catch(() => makeError(`${personToDelete.name} has already been deleted.`))
     }
   }
   
@@ -89,6 +105,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Message.ErrorMessage message={errorMessage} />
+      <Message.Notification message={notification} />
       <Form 
         onSubmit={addPerson}
         nameValue={newName}
