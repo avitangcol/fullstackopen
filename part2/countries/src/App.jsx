@@ -14,6 +14,9 @@ function App() {
       .then(response => {
         setCountries(response)
       })
+      .catch(err => {
+        console.log(err)
+      })
   }, [])
 
   if (!countries) {
